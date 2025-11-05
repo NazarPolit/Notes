@@ -5,6 +5,7 @@ using Notes.Application.Interfaces;
 using Notes.Persistance;
 using System.Reflection;
 using Notes.Application;
+using Notes.WebApi.Middleware;
 
 namespace Notes.WebApi
 {
@@ -66,6 +67,8 @@ namespace Notes.WebApi
 				app.UseSwagger();
 				app.UseSwaggerUI();
 			}
+
+			app.UseCustomExceptionHandler();
 
 			app.UseHttpsRedirection();
 			app.UseCors("AllowAll");
