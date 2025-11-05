@@ -24,3 +24,4 @@ namespace Notes.Application.Notes.Queries.GetNoteList
 		}
 	}
 }
+ 
