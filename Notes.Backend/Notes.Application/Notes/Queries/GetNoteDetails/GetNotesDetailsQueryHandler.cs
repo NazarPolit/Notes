@@ -12,7 +12,7 @@ using System.Threading.Tasks;
 
 namespace Notes.Application.Notes.Queries.GetNoteDetails
 {
-	public class GetNotesDetailsQueryHandler
+    public class GetNotesDetailsQueryHandler
 		:IRequestHandler<GetNoteDetailsQuery, NoteDetailsVm>
 	{
 		private readonly INotesDbContext _dbContext;
