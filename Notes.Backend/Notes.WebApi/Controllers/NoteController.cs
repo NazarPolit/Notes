@@ -1,4 +1,5 @@
 ﻿using AutoMapper;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Notes.Application.Notes.Commands.CreateNote;
 using Notes.Application.Notes.Commands.DeleteNote;
@@ -9,6 +10,7 @@ using Notes.WebApi.Models;
 
 namespace Notes.WebApi.Controllers
 {
+	[Authorize]
 	[Route("api/[controller]")]
 	public class NoteController : BaseController
 	{
@@ -34,7 +36,8 @@ namespace Notes.WebApi.Controllers
 		{
 			var query = new GetNoteDetailsQuery
 			{
-				UserId = UserId
+				UserId = UserId,
+				Id = id
 			};
 			var vm = await Mediator.Send(query);
 			return Ok(vm);

@@ -32,7 +32,6 @@ namespace Notes.Application.Notes.Commands.CreateNote
 			};
 
 			await _dbContext.Notes.AddAsync(note);
-			Console.WriteLine($"Title: {request.Title}, Details: {request.Details}");
 			await _dbContext.SaveChangesAsync(cancellationToken);
 
 			return note.Id;

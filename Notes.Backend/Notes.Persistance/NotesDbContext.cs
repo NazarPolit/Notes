@@ -1,4 +1,6 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
+using Microsoft.AspNetCore.Identity;
+using Microsoft.EntityFrameworkCore;
 using Notes.Application.Interfaces;
 using Notes.Domain;
 using Notes.Persistance.EntityTypeConfigurations;
@@ -10,7 +12,7 @@ using System.Threading.Tasks;
 
 namespace Notes.Persistance
 {
-	public class NotesDbContext : DbContext, INotesDbContext
+	public class NotesDbContext : IdentityDbContext<AppUser, IdentityRole<Guid>, Guid>, INotesDbContext
 	{
 		public DbSet<Note> Notes { get; set; }
 
@@ -19,8 +21,9 @@ namespace Notes.Persistance
 
 		protected override void OnModelCreating(ModelBuilder builder)
 		{
-			builder.ApplyConfiguration(new NoteConfigurations());
 			base.OnModelCreating(builder);
+			builder.ApplyConfiguration(new NoteConfigurations());
+			
 		}
 	}
 }

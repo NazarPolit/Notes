@@ -6,6 +6,10 @@ using Notes.Persistance;
 using System.Reflection;
 using Notes.Application;
 using Notes.WebApi.Middleware;
+using Notes.Domain;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.IdentityModel.Tokens;
+using System.Text;
 
 namespace Notes.WebApi
 {
@@ -30,6 +34,38 @@ namespace Notes.WebApi
 			builder.Services.AddApplication();
 			builder.Services.AddPersistance(builder.Configuration);
 
+			builder.Services.AddIdentity<AppUser, IdentityRole<Guid>>(options =>
+			{
+				options.Password.RequireDigit = false;
+				options.Password.RequiredLength = 6;
+				options.Password.RequireNonAlphanumeric = false;
+				options.Password.RequireUppercase = false;
+				options.Password.RequireLowercase = false;
+			}).AddEntityFrameworkStores<NotesDbContext>(); 
+
+			builder.Services.AddAuthentication(options =>
+			{
+				options.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
+				options.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
+			})
+				.AddJwtBearer(options =>
+				{
+					options.TokenValidationParameters = new TokenValidationParameters
+					{
+						ValidateIssuer = true,
+						ValidateAudience = true,
+						ValidateLifetime = true,
+						ValidateIssuerSigningKey = true,
+						ValidIssuer = builder.Configuration["Jwt:Issuer"],
+						ValidAudience = builder.Configuration["Jwt:Audience"],
+						IssuerSigningKey = new SymmetricSecurityKey(
+							Encoding.UTF8.GetBytes(builder.Configuration["Jwt:Key"]))
+					};
+				});
+
+			builder.Services.AddAuthorization();
+			builder.Services.AddHttpContextAccessor();
+
 			builder.Services.AddCors(options =>
 			{
 				options.AddPolicy("AllowAll", policy =>
@@ -41,7 +77,33 @@ namespace Notes.WebApi
 			});
 			// Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 			builder.Services.AddEndpointsApiExplorer();
-			builder.Services.AddSwaggerGen();
+			builder.Services.AddSwaggerGen(options => 
+			{
+				options.AddSecurityDefinition("Bearer", new Microsoft.OpenApi.Models.OpenApiSecurityScheme
+				{
+					Name = "Authorization",
+					Type = Microsoft.OpenApi.Models.SecuritySchemeType.ApiKey,
+					Scheme = "Bearer",
+					BearerFormat = "JWT",
+					In = Microsoft.OpenApi.Models.ParameterLocation.Header,
+					Description = "Введіть 'Bearer' [пробіл] а потім ваш токен.\n\nПриклад: \"Bearer 12345abcdef\""
+				});
+
+				options.AddSecurityRequirement(new Microsoft.OpenApi.Models.OpenApiSecurityRequirement
+				{
+					{
+						new Microsoft.OpenApi.Models.OpenApiSecurityScheme
+						{
+							Reference = new Microsoft.OpenApi.Models.OpenApiReference
+							{
+								Type = Microsoft.OpenApi.Models.ReferenceType.SecurityScheme,
+								Id = "Bearer"
+							}
+						},
+						new string[] {}
+					}
+				});
+			});
 
 
 
@@ -73,6 +135,7 @@ namespace Notes.WebApi
 			app.UseHttpsRedirection();
 			app.UseCors("AllowAll");
 
+			app.UseAuthentication();
 			app.UseAuthorization();
 
 
