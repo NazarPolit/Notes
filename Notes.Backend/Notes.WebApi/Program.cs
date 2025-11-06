@@ -86,7 +86,7 @@ namespace Notes.WebApi
 					Scheme = "Bearer",
 					BearerFormat = "JWT",
 					In = Microsoft.OpenApi.Models.ParameterLocation.Header,
-					Description = "Введіть 'Bearer' [пробіл] а потім ваш токен.\n\nПриклад: \"Bearer 12345abcdef\""
+					Description = "Type 'Bearer' [space] and then your token.\n\nExample: \"Bearer 12345abcdef\""
 				});
 
 				options.AddSecurityRequirement(new Microsoft.OpenApi.Models.OpenApiSecurityRequirement
