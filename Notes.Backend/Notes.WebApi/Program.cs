@@ -62,7 +62,7 @@ namespace Notes.WebApi
 							Encoding.UTF8.GetBytes(builder.Configuration["Jwt:Key"]))
 					};
 				});
-
+			              
 			builder.Services.AddAuthorization();
 			builder.Services.AddHttpContextAccessor();
 

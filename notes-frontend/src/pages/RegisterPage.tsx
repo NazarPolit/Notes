@@ -1,7 +1,6 @@
-// src/pages/RegisterPage.tsx
 import React, { useState } from 'react';
 import { registerUser } from '../api/apiService';
-import { useNavigate, Link } from 'react-router-dom'; // <--- Додаємо Link
+import { useNavigate, Link } from 'react-router-dom'; 
 
 export const RegisterPage = () => {
   const [email, setEmail] = useState('');
@@ -12,13 +11,10 @@ export const RegisterPage = () => {
     e.preventDefault();
 
     try {
-      // 1. Викликаємо registerUser замість loginUser
       await registerUser({ email, password });
       
-      // 2. Повідомляємо про успіх
       alert('Registration successful! You can now log in.');
       
-      // 3. Перенаправляємо на сторінку логіну
       navigate('/login');
 
     } catch (error) {
@@ -50,7 +46,6 @@ export const RegisterPage = () => {
         <button type="submit">Register</button>
       </form>
       
-      {/* Додаємо посилання назад на логін */}
       <p>
         Already have account? <Link to="/login">Sign in</Link>
       </p>

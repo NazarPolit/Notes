@@ -1,4 +1,3 @@
-// src/pages/NotesPage.tsx
 import React, { useState, useEffect } from 'react';
 import { getNotes, createNote, deleteNote, updateNote } from '../api/apiService';
 import { useNavigate, Link } from 'react-router-dom'
@@ -107,7 +106,6 @@ export const NotesPage = () => {
 
       <hr />
 
-      {/* --- СПИСОК НОТАТОК --- */}
       <h3>Your list</h3>
       <ul style={{ listStyle: 'none', padding: 0 }}>
         {notes.map(note => (

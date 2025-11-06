@@ -1,28 +1,24 @@
-// src/pages/NoteDetailPage.tsx
-import React, { useState, useEffect } from 'react';
+import { useState, useEffect } from 'react';
 import { useParams, Link } from 'react-router-dom';
 import { getNoteById } from '../api/apiService';
-import type { Note } from '../interfaces'; // <-- Імпортуємо тип
+import type { Note } from '../interfaces'; 
 
-// Функція для форматування дати (можна винести в окремий файл)
 const formatDateTime = (dateString: string) => {
   return new Date(dateString).toLocaleString();
 };
 
 export const NoteDetailPage = () => {
-  // 1. Отримуємо 'id' з URL (наприклад, /notes/123-abc)
   const { id } = useParams<{ id: string }>(); 
   const [note, setNote] = useState<Note | null>(null);
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    if (!id) return; // Перевірка, чи 'id' існує
-
+    if (!id) return; 
     const fetchNote = async () => {
       try {
         setLoading(true);
         const response = await getNoteById(id);
-        setNote(response.data); // Ваш C# Get(id) повертає NoteDetailsVm
+        setNote(response.data); 
       } catch (error) {
         console.error('Failed to load notes:', error);
       } finally {
@@ -31,14 +27,12 @@ export const NoteDetailPage = () => {
     };
 
     fetchNote();
-  }, [id]); // Цей ефект спрацює, коли 'id' зміниться
+  }, [id]);
 
-  // 3. Поки йде завантаження
   if (loading) {
     return <div>Loading...</div>;
   }
 
-  // 4. Якщо нотатку не знайдено
   if (!note) {
     return (
       <div>
@@ -48,7 +42,6 @@ export const NoteDetailPage = () => {
     );
   }
 
-  // 5. Відображаємо всі деталі
   return (
     <div style={{ border: '1px solid #ccc', padding: '20px', maxWidth: '600px' }}>
       <h1>{note.title}</h1>

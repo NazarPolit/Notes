@@ -1,8 +1,7 @@
-// src/App.tsx
 import { BrowserRouter, Routes, Route, Navigate } from 'react-router-dom';
 import { LoginPage } from './pages/LoginPage';
-import { NotesPage } from './pages/NotesPage'; // <--- Імпортуємо
-import { ProtectedRoute } from './components/ProtectedRoute'; // <--- Імпортуємо
+import { NotesPage } from './pages/NotesPage'; 
+import { ProtectedRoute } from './components/ProtectedRoute'; 
 import { RegisterPage } from './pages/RegisterPage';
 import { NoteDetailPage } from './pages/NoteDetailPage'; 
 
